@@ -111,9 +111,11 @@ struct ConfigurationView: View {
                     .toolbar {
                         ToolbarItemGroup(placement: .navigationBarTrailing) {
                             Button {
+                                updatedConfigurations("Test")
                                 presentationMode.wrappedValue.dismiss()
+
                             } label: {
-                                Text("Cancel")
+                                Text("Done")
                             }
                         }
                     }

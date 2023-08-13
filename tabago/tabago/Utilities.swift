@@ -10,7 +10,4 @@ import Foundation
 class Utilities {
 }
 
-enum StatusEnum {
-    case active
-    case passive
-}
+
