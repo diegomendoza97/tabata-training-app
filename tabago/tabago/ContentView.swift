@@ -141,7 +141,9 @@ struct ContentView: View {
     }
     
     func previousRound() {
-        currentRound -= 1
+        if currentRound != 1 {
+            currentRound -= 1
+        }
         toggleTimer()
     }
     
@@ -154,7 +156,9 @@ struct ContentView: View {
         minutes = 0
         currentRound = 1
         status = "initial"
-        circleParts = 0.0
+        circleParts = 0.20
+        circleDivision = 20.0
+            circleProgress = 1
     }
     
     func updateCircle() {
@@ -195,11 +199,12 @@ struct ContentView: View {
                 previousRound()
             } label: {
                 Image(systemName: "chevron.left.2")
-                    .foregroundColor(currentRound <= 1 ? .gray : labelColors)
+                    .foregroundColor(currentRound <= 1 && (status == "initial" || status == "passive") ? .gray : labelColors)
             }
             .font(.system(size: 30))
+            .disabled(currentRound <= 1 && (status == "initial" || status == "passive"))
             .padding()
-            .disabled(currentRound <= 1)
+
 
             Spacer()
             Button {
