@@ -10,7 +10,11 @@ import AVFoundation
 import MediaPlayer
 
 struct ContentView: View {
+    
+    let defaults = UserDefaults.standard;
+    
     var primaryColor = Color(red: 62/255, green: 207/255, blue: 142/255)
+    var activeColor = Color(red: 245/255,green: 59/255, blue: 102/255)
     var secondaryColor = Color(red: 24/255, green: 24/255, blue: 24/255)
     
     @State var activeTimeMinutes: Int = 0
@@ -35,18 +39,34 @@ struct ContentView: View {
     
     @State var timerStarted = false
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect();
+
+
     
+    func initDefaults() {
+        activeTimeMinutes =  defaults.integer(forKey: "activeTimeMinutes")
+        activeTimeSeconds =  defaults.integer(forKey: "activeTimeSeconds")
+        
+        passiveTimeMinutes =  defaults.integer(forKey: "passiveTimeMinutes")
+        passiveTimeSeconds =  defaults.integer(forKey: "passiveTimeSeconds")
+        numberOfRounds =  defaults.integer(forKey: "numberOfRounds")
+        totalRounds = numberOfRounds
+    }
     
     var backgroundColor: Color {
         if status == "initial" {
             return Color.blue
         }
-        return status == "passive" ? secondaryColor : Color(red: 36/255, green: 180/255, blue: 126/255)
+        return secondaryColor
     }
     
     
     var labelColors: Color {
-        return status == "passive" ? primaryColor : .white
+        if status == "passive" {
+            return primaryColor
+        } else if status == "active" {
+            return activeColor
+        }
+        return .white
     }
     
     var body: some View {
@@ -90,6 +110,10 @@ struct ContentView: View {
             .onAppear {
                 UIApplication.shared.isIdleTimerDisabled = true
                 MPVolumeView.setVolume(7.00)
+//                initDefaults()
+//                print(UserDefaults.standard.dictionaryRepresentation());
+//                totalRounds = defaults.integer(forKey: "numberOfRounds")
+//                activeTimeMinutes =  defaults.integer(forKey: "activeTimeMinutes")
             }
         }
     }
@@ -163,7 +187,6 @@ struct ContentView: View {
     
     func updateCircle() {
         circleParts = circleDivision * Double(circleProgress) / 100
-        print(circleParts, circleDivision, circleProgress)
         circleProgress += 1
     }
     

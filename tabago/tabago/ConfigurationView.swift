@@ -18,6 +18,8 @@ struct ConfigurationView: View {
     @Binding var passiveMinutes: Int
     @Binding var passiveSeconds: Int
     
+    let defaults = UserDefaults.standard;
+    
     // Output
     let updatedConfigurations: (String) -> ()
     
@@ -112,6 +114,7 @@ struct ConfigurationView: View {
                         ToolbarItemGroup(placement: .navigationBarTrailing) {
                             Button {
                                 updatedConfigurations("Test")
+                                updateUserDefault()
                                 presentationMode.wrappedValue.dismiss()
 
                             } label: {
@@ -121,6 +124,17 @@ struct ConfigurationView: View {
                     }
         }
         
+    }
+    
+    func updateUserDefault() {
+        defaults.set(activeSeconds, forKey: "activeSeconds")
+        defaults.set(activeMinutes, forKey: "activeMinutes")
+        
+        defaults.set(passiveSeconds, forKey: "passiveSeconds")
+        defaults.set(passiveMinutes, forKey: "passiveMinutes")
+        
+        
+        defaults.set(numberOfRounds, forKey: "numberOfRounds")
     }
 }
 
